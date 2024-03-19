@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,6 +36,14 @@ class Client
 
     #[ORM\Column(nullable: true)]
     private ?int $Notes = null;
+
+    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'client')]
+    private Collection $typeactivité;
+
+    public function __construct()
+    {
+        $this->typeactivité = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +130,36 @@ class Client
     public function setNotes(?int $Notes): static
     {
         $this->Notes = $Notes;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Job>
+     */
+    public function getTypeactivité(): Collection
+    {
+        return $this->typeactivité;
+    }
+
+    public function addTypeactivit(Job $typeactivit): static
+    {
+        if (!$this->typeactivité->contains($typeactivit)) {
+            $this->typeactivité->add($typeactivit);
+            $typeactivit->setClient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTypeactivit(Job $typeactivit): static
+    {
+        if ($this->typeactivité->removeElement($typeactivit)) {
+            // set the owning side to null (unless already changed)
+            if ($typeactivit->getClient() === $this) {
+                $typeactivit->setClient(null);
+            }
+        }
 
         return $this;
     }

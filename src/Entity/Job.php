@@ -61,6 +61,9 @@ class Job
     #[ORM\OneToMany(targetEntity: Candidacy::class, mappedBy: 'job')]
     private Collection $candidacies;
 
+    #[ORM\ManyToOne(inversedBy: 'typeactivité')]
+    private ?Client $client = null;
+
     public function __construct()
     {
         $this->candidacies = new ArrayCollection();
