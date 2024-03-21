@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ExperienceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ExperienceRepository::class)]
@@ -14,10 +16,15 @@ class Experience
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Experience = null;
+    private ?string $experience = null;
 
-    #[ORM\OneToOne(mappedBy: 'experience', cascade: ['persist', 'remove'])]
-    private ?Candidate $candidate = null;
+    #[ORM\OneToMany(targetEntity: Candidate::class, mappedBy: 'experience')]
+    private Collection $candidate;
+
+    public function __construct()
+    {
+        $this->candidate = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -26,30 +33,45 @@ class Experience
 
     public function getExperience(): ?string
     {
-        return $this->Experience;
+        return $this->experience;
     }
 
-    public function setExperience(string $Experience): static
+    public function setExperience(string $experience): static
     {
-        $this->Experience = $Experience;
+        $this->experience = $experience;
 
         return $this;
     }
 
-    public function getCandidate(): ?Candidate
+    /**
+     * @return Collection<int, Candidate>
+     */
+    public function getCandidate(): Collection
     {
         return $this->candidate;
     }
 
-    public function setCandidate(Candidate $candidate): static
+    public function addCandidate(Candidate $candidate): static
     {
-        // set the owning side of the relation if necessary
-        if ($candidate->getExperience() !== $this) {
+        if (!$this->candidate->contains($candidate)) {
+            $this->candidate->add($candidate);
             $candidate->setExperience($this);
         }
 
-        $this->candidate = $candidate;
+        return $this;
+    }
+
+    public function removeCandidate(Candidate $candidate): static
+    {
+        if ($this->candidate->removeElement($candidate)) {
+            // set the owning side to null (unless already changed)
+            if ($candidate->getExperience() === $this) {
+                $candidate->setExperience(null);
+            }
+        }
 
         return $this;
     }
+
+
 }

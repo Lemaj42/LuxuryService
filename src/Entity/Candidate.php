@@ -73,8 +73,7 @@ class Candidate
     #[ORM\Column(length: 255)]
     private ?string $JobCategory = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Experience = null;
+
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $ShortDescription = null;
@@ -94,15 +93,16 @@ class Candidate
     #[ORM\Column(length: 255)]
     private ?string $Files = null;
 
-    #[ORM\OneToOne(inversedBy: 'candidate', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Experience $experience = null;
+
 
     #[ORM\OneToMany(targetEntity: Candidacy::class, mappedBy: 'candida')]
     private Collection $candidacies;
 
     #[ORM\OneToOne(inversedBy: 'candidate', cascade: ['persist', 'remove'])]
     private ?User $user = null;
+
+    #[ORM\ManyToOne(inversedBy: 'candidate')]
+    private ?Experience $experience = null;
 
     public function __construct()
     {
@@ -342,17 +342,6 @@ class Candidate
         return $this;
     }
 
-    public function getExperience(): ?string
-    {
-        return $this->Experience;
-    }
-
-    public function setExperience(string $Experience): static
-    {
-        $this->Experience = $Experience;
-
-        return $this;
-    }
 
     public function getShortDescription(): ?string
     {
@@ -464,6 +453,18 @@ class Candidate
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getExperience(): ?Experience
+    {
+        return $this->experience;
+    }
+
+    public function setExperience(?Experience $experience): static
+    {
+        $this->experience = $experience;
 
         return $this;
     }
