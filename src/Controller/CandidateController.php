@@ -6,6 +6,7 @@ use App\Entity\Candidate;
 use App\Form\CandidateType;
 use App\Repository\CandidatsRepository;
 use App\Repository\ExperienceRepository;
+use App\Repository\JobCategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +18,12 @@ class CandidateController extends AbstractController
 {
 
     #[Route('/edit', name: 'app_candidate_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, EntityManagerInterface $entityManager, ExperienceRepository $experienceRepository): Response
+    public function edit(Request $request, EntityManagerInterface $entityManager, ExperienceRepository $experienceRepository, JobCategoryRepository $jobCategoryRepository): Response
     {
         $user = $this->getUser();
         $candidat = $user->getCandidate();
         $experiences = $experienceRepository->findAll();
+        $jobCategorys = $jobCategoryRepository->findAll();
 
 
         $form = $this->createForm(CandidateType::class, $candidat);
@@ -35,6 +37,7 @@ class CandidateController extends AbstractController
         return $this->render('candidate/edit.html.twig', [
             'candidat' => $candidat,
             'experiences' => $experiences,
+            'jobCategorys' => $jobCategorys,
             'form' => $form,
         ]);
     }

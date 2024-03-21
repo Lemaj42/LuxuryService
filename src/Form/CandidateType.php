@@ -25,19 +25,19 @@ class CandidateType extends AbstractType
             ->add('CurriculumVitae')
             ->add('ProfilPicture')
             ->add('CurrentLocation')
-            ->add('DateOfBirth', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('PlaceOfBirth')
-            ->add('EmailAdress')
-            ->add('ConfirmEmail')
-            ->add('Password')
-            ->add('ConfirmPassword')
-            ->add('Availability')
-            ->add('JobCategory')
-            ->add('Experience')
-            ->add('ShortDescription')
-            ->add('Notes')
+            // ->add('DateOfBirth', null, [
+            //     'widget' => 'single_text',
+            // ])
+            // ->add('PlaceOfBirth')
+            // ->add('EmailAdress')
+            // ->add('ConfirmEmail')
+            // ->add('Password')
+            // ->add('ConfirmPassword')
+            // ->add('Availability')
+            // ->add('JobCategory')
+            // ->add('Experience')
+            // ->add('ShortDescription')
+            // ->add('Notes')
             //     ->add('DateCreated', null, [
             //         'widget' => 'single_text',
             //     ])
