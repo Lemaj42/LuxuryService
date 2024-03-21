@@ -33,7 +33,7 @@ class RegistrationController extends AbstractController
             );
 
             $candidate = new Candidate();
-            $candidate->setUser($user);
+            $user->setCandidate($candidate);
 
             $entityManager->persist($user);
             $entityManager->flush();

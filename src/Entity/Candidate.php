@@ -101,7 +101,7 @@ class Candidate
     #[ORM\OneToMany(targetEntity: Candidacy::class, mappedBy: 'candida')]
     private Collection $candidacies;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'candidate', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
     public function __construct()

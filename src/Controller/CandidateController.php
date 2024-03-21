@@ -19,14 +19,13 @@ class CandidateController extends AbstractController
     public function edit(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
-        $candidat = $user->setCandidate();
+        $candidat = $user->getCandidate();
         $form = $this->createForm(CandidateType::class, );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_candidate_edit', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('candidate/edit.html.twig', [
