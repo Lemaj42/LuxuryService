@@ -22,6 +22,7 @@ class CandidateController extends AbstractController
     {
         $user = $this->getUser();
         $candidat = $user->getCandidate();
+        // dd($user);
         $experiences = $experienceRepository->findAll();
         $jobCategorys = $jobCategoryRepository->findAll();
 
