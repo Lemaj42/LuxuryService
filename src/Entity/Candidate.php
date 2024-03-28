@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\CandidateRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -16,443 +14,364 @@ class Candidate
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?bool $Gender = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $firstname = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $FirstName = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $lastname = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $LastName = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $adress = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $Adress = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $country = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $Country = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nationality = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $Nationality = null;
+    #[ORM\Column(nullable: true)]
+    private ?bool $passport = null;
 
-    #[ORM\Column]
-    private ?bool $Passport = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $passportFile = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $PassportFile = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $curriculumVitae = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $CurriculumVitae = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $profilePicture = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $ProfilPicture = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $currentLocation = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $CurrentLocation = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateBrith = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $DateOfBirth = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $placeBrith = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $PlaceOfBirth = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mail = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $EmailAdress = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $confirmMail = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $ConfirmEmail = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Password = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $confirmPassword = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $ConfirmPassword = null;
+    #[ORM\Column(nullable: true)]
+    private ?bool $availability = null;
 
-    #[ORM\Column]
-    private ?bool $Availability = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $jobCategory = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $JobCategory = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $shortDescription = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $notes = null;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateCreated = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $ShortDescription = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateUpdated = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $Notes = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateDeleted = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $DateCreated = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $DateUpdated = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $DateDeleted = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $Files = null;
-
-
-
-    #[ORM\OneToMany(targetEntity: Candidacy::class, mappedBy: 'candida')]
-    private Collection $candidacies;
+    #[ORM\ManyToOne(inversedBy: 'candidates')]
+    private ?Experience $experience = null;
 
     #[ORM\OneToOne(inversedBy: 'candidate', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'candidate')]
-    private ?Experience $experience = null;
+    private ?JobToCandidate $jobToCandidate = null;
 
-    public function __construct()
-    {
-        $this->candidacies = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'candidates')]
+    private ?Gender $sexe = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function isGender(): ?bool
+    public function getFirstname(): ?string
     {
-        return $this->Gender;
+        return $this->firstname;
     }
 
-    public function setGender(bool $Gender): static
+    public function setFirstname(?string $firstname): static
     {
-        $this->Gender = $Gender;
+        $this->firstname = $firstname;
 
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getLastname(): ?string
     {
-        return $this->FirstName;
+        return $this->lastname;
     }
 
-    public function setFirstName(string $FirstName): static
+    public function setLastname(?string $lastname): static
     {
-        $this->FirstName = $FirstName;
-
-        return $this;
-    }
-
-    public function getLastName(): ?string
-    {
-        return $this->LastName;
-    }
-
-    public function setLastName(string $LastName): static
-    {
-        $this->LastName = $LastName;
+        $this->lastname = $lastname;
 
         return $this;
     }
 
     public function getAdress(): ?string
     {
-        return $this->Adress;
+        return $this->adress;
     }
 
-    public function setAdress(string $Adress): static
+    public function setAdress(?string $adress): static
     {
-        $this->Adress = $Adress;
+        $this->adress = $adress;
 
         return $this;
     }
 
     public function getCountry(): ?string
     {
-        return $this->Country;
+        return $this->country;
     }
 
-    public function setCountry(string $Country): static
+    public function setCountry(?string $country): static
     {
-        $this->Country = $Country;
+        $this->country = $country;
 
         return $this;
     }
 
     public function getNationality(): ?string
     {
-        return $this->Nationality;
+        return $this->nationality;
     }
 
-    public function setNationality(string $Nationality): static
+    public function setNationality(?string $nationality): static
     {
-        $this->Nationality = $Nationality;
+        $this->nationality = $nationality;
 
         return $this;
     }
 
     public function isPassport(): ?bool
     {
-        return $this->Passport;
+        return $this->passport;
     }
 
-    public function setPassport(bool $Passport): static
+    public function setPassport(?bool $passport): static
     {
-        $this->Passport = $Passport;
+        $this->passport = $passport;
 
         return $this;
     }
 
     public function getPassportFile(): ?string
     {
-        return $this->PassportFile;
+        return $this->passportFile;
     }
 
-    public function setPassportFile(string $PassportFile): static
+    public function setPassportFile(?string $passportFile): static
     {
-        $this->PassportFile = $PassportFile;
+        $this->passportFile = $passportFile;
 
         return $this;
     }
 
     public function getCurriculumVitae(): ?string
     {
-        return $this->CurriculumVitae;
+        return $this->curriculumVitae;
     }
 
-    public function setCurriculumVitae(string $CurriculumVitae): static
+    public function setCurriculumVitae(?string $curriculumVitae): static
     {
-        $this->CurriculumVitae = $CurriculumVitae;
+        $this->curriculumVitae = $curriculumVitae;
 
         return $this;
     }
 
-    public function getProfilPicture(): ?string
+    public function getProfilePicture(): ?string
     {
-        return $this->ProfilPicture;
+        return $this->profilePicture;
     }
 
-    public function setProfilPicture(string $ProfilPicture): static
+    public function setProfilePicture(?string $profilePicture): static
     {
-        $this->ProfilPicture = $ProfilPicture;
+        $this->profilePicture = $profilePicture;
 
         return $this;
     }
 
     public function getCurrentLocation(): ?string
     {
-        return $this->CurrentLocation;
+        return $this->currentLocation;
     }
 
-    public function setCurrentLocation(string $CurrentLocation): static
+    public function setCurrentLocation(?string $currentLocation): static
     {
-        $this->CurrentLocation = $CurrentLocation;
+        $this->currentLocation = $currentLocation;
 
         return $this;
     }
 
-    public function getDateOfBirth(): ?\DateTimeInterface
+    public function getDateBrith(): ?\DateTimeInterface
     {
-        return $this->DateOfBirth;
+        return $this->dateBrith;
     }
 
-    public function setDateOfBirth(\DateTimeInterface $DateOfBirth): static
+    public function setDateBrith(?\DateTimeInterface $dateBrith): static
     {
-        $this->DateOfBirth = $DateOfBirth;
+        $this->dateBrith = $dateBrith;
 
         return $this;
     }
 
-    public function getPlaceOfBirth(): ?string
+    public function getPlaceBrith(): ?string
     {
-        return $this->PlaceOfBirth;
+        return $this->placeBrith;
     }
 
-    public function setPlaceOfBirth(string $PlaceOfBirth): static
+    public function setPlaceBrith(?string $placeBrith): static
     {
-        $this->PlaceOfBirth = $PlaceOfBirth;
+        $this->placeBrith = $placeBrith;
 
         return $this;
     }
 
-    public function getEmailAdress(): ?string
+    public function getMail(): ?string
     {
-        return $this->EmailAdress;
+        return $this->mail;
     }
 
-    public function setEmailAdress(string $EmailAdress): static
+    public function setMail(?string $mail): static
     {
-        $this->EmailAdress = $EmailAdress;
+        $this->mail = $mail;
 
         return $this;
     }
 
-    public function getConfirmEmail(): ?string
+    public function getConfirmMail(): ?string
     {
-        return $this->ConfirmEmail;
+        return $this->confirmMail;
     }
 
-    public function setConfirmEmail(string $ConfirmEmail): static
+    public function setConfirmMail(?string $confirmMail): static
     {
-        $this->ConfirmEmail = $ConfirmEmail;
+        $this->confirmMail = $confirmMail;
 
         return $this;
     }
 
     public function getPassword(): ?string
     {
-        return $this->Password;
+        return $this->password;
     }
 
-    public function setPassword(string $Password): static
+    public function setPassword(?string $password): static
     {
-        $this->Password = $Password;
+        $this->password = $password;
 
         return $this;
     }
 
     public function getConfirmPassword(): ?string
     {
-        return $this->ConfirmPassword;
+        return $this->confirmPassword;
     }
 
-    public function setConfirmPassword(string $ConfirmPassword): static
+    public function setConfirmPassword(?string $confirmPassword): static
     {
-        $this->ConfirmPassword = $ConfirmPassword;
+        $this->confirmPassword = $confirmPassword;
 
         return $this;
     }
 
     public function isAvailability(): ?bool
     {
-        return $this->Availability;
+        return $this->availability;
     }
 
-    public function setAvailability(bool $Availability): static
+    public function setAvailability(?bool $availability): static
     {
-        $this->Availability = $Availability;
+        $this->availability = $availability;
 
         return $this;
     }
 
     public function getJobCategory(): ?string
     {
-        return $this->JobCategory;
+        return $this->jobCategory;
     }
 
-    public function setJobCategory(string $JobCategory): static
+    public function setJobCategory(?string $jobCategory): static
     {
-        $this->JobCategory = $JobCategory;
+        $this->jobCategory = $jobCategory;
 
         return $this;
     }
 
-
     public function getShortDescription(): ?string
     {
-        return $this->ShortDescription;
+        return $this->shortDescription;
     }
 
-    public function setShortDescription(string $ShortDescription): static
+    public function setShortDescription(?string $shortDescription): static
     {
-        $this->ShortDescription = $ShortDescription;
+        $this->shortDescription = $shortDescription;
 
         return $this;
     }
 
     public function getNotes(): ?string
     {
-        return $this->Notes;
+        return $this->notes;
     }
 
-    public function setNotes(string $Notes): static
+    public function setNotes(?string $notes): static
     {
-        $this->Notes = $Notes;
+        $this->notes = $notes;
 
         return $this;
     }
 
     public function getDateCreated(): ?\DateTimeInterface
     {
-        return $this->DateCreated;
+        return $this->dateCreated;
     }
 
-    public function setDateCreated(\DateTimeInterface $DateCreated): static
+    public function setDateCreated(?\DateTimeInterface $dateCreated): static
     {
-        $this->DateCreated = $DateCreated;
+        $this->dateCreated = $dateCreated;
 
         return $this;
     }
 
     public function getDateUpdated(): ?\DateTimeInterface
     {
-        return $this->DateUpdated;
+        return $this->dateUpdated;
     }
 
-    public function setDateUpdated(\DateTimeInterface $DateUpdated): static
+    public function setDateUpdated(?\DateTimeInterface $dateUpdated): static
     {
-        $this->DateUpdated = $DateUpdated;
+        $this->dateUpdated = $dateUpdated;
 
         return $this;
     }
 
     public function getDateDeleted(): ?\DateTimeInterface
     {
-        return $this->DateDeleted;
+        return $this->dateDeleted;
     }
 
-    public function setDateDeleted(\DateTimeInterface $DateDeleted): static
+    public function setDateDeleted(?\DateTimeInterface $dateDeleted): static
     {
-        $this->DateDeleted = $DateDeleted;
-
-        return $this;
-    }
-
-    public function getFiles(): ?string
-    {
-        return $this->Files;
-    }
-
-    public function setFiles(string $Files): static
-    {
-        $this->Files = $Files;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Candidacy>
-     */
-    public function getCandidacies(): Collection
-    {
-        return $this->candidacies;
-    }
-
-    public function addCandidacy(Candidacy $candidacy): static
-    {
-        if (!$this->candidacies->contains($candidacy)) {
-            $this->candidacies->add($candidacy);
-            $candidacy->setCandida($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCandidacy(Candidacy $candidacy): static
-    {
-        if ($this->candidacies->removeElement($candidacy)) {
-            // set the owning side to null (unless already changed)
-            if ($candidacy->getCandida() === $this) {
-                $candidacy->setCandida(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
+        $this->dateDeleted = $dateDeleted;
 
         return $this;
     }
@@ -469,4 +388,39 @@ class Candidate
         return $this;
     }
 
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getJobToCandidate(): ?JobToCandidate
+    {
+        return $this->jobToCandidate;
+    }
+
+    public function setJobToCandidate(?JobToCandidate $jobToCandidate): static
+    {
+        $this->jobToCandidate = $jobToCandidate;
+
+        return $this;
+    }
+
+    public function getSexe(): ?Gender
+    {
+        return $this->sexe;
+    }
+
+    public function setSexe(?Gender $sexe): static
+    {
+        $this->sexe = $sexe;
+
+        return $this;
+    }
 }

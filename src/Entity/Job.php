@@ -16,57 +16,52 @@ class Job
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Reference = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reference = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Client = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $description = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $Description = null;
+    #[ORM\Column(nullable: true)]
+    private ?bool $active = null;
 
-    #[ORM\Column]
-    private ?bool $Active = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $notes = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $Notes = null;
-
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $JobTitle = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $location = null;
 
 
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $closingDate = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Location = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $salary = null;
 
-
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $ClosingDate = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $Salary = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $DateCreation = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateCreation = null;
 
     #[ORM\ManyToOne(inversedBy: 'jobs')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?JobType $JobType = null;
+    private ?JobType $jobType = null;
 
     #[ORM\ManyToOne(inversedBy: 'jobs')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?JobCategory $JobCategory = null;
+    private ?JobCategory $jobCategory = null;
 
-    #[ORM\OneToMany(targetEntity: Candidacy::class, mappedBy: 'job')]
-    private Collection $candidacies;
+    #[ORM\OneToMany(targetEntity: JobToCandidate::class, mappedBy: 'job')]
+    private Collection $jobToCandidates;
 
-    #[ORM\ManyToOne(inversedBy: 'typeactivité')]
+    #[ORM\ManyToOne(inversedBy: 'jobs')]
     private ?Client $client = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $startingDate = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $title = null;
 
     public function __construct()
     {
-        $this->candidacies = new ArrayCollection();
+        $this->jobToCandidates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -76,176 +71,191 @@ class Job
 
     public function getReference(): ?string
     {
-        return $this->Reference;
+        return $this->reference;
     }
 
-    public function setReference(string $Reference): static
+    public function setReference(?string $reference): static
     {
-        $this->Reference = $Reference;
-
-        return $this;
-    }
-
-    public function getClient(): ?string
-    {
-        return $this->Client;
-    }
-
-    public function setClient(string $Client): static
-    {
-        $this->Client = $Client;
+        $this->reference = $reference;
 
         return $this;
     }
 
     public function getDescription(): ?string
     {
-        return $this->Description;
+        return $this->description;
     }
 
-    public function setDescription(string $Description): static
+    public function setDescription(?string $description): static
     {
-        $this->Description = $Description;
+        $this->description = $description;
 
         return $this;
     }
 
     public function isActive(): ?bool
     {
-        return $this->Active;
+        return $this->active;
     }
 
-    public function setActive(bool $Active): static
+    public function setActive(?bool $active): static
     {
-        $this->Active = $Active;
+        $this->active = $active;
 
         return $this;
     }
 
     public function getNotes(): ?string
     {
-        return $this->Notes;
+        return $this->notes;
     }
 
-    public function setNotes(string $Notes): static
+    public function setNotes(?string $notes): static
     {
-        $this->Notes = $Notes;
+        $this->notes = $notes;
 
         return $this;
     }
-
-    public function getJobTitle(): ?string
-    {
-        return $this->JobTitle;
-    }
-
-    public function setJobTitle(string $JobTitle): static
-    {
-        $this->JobTitle = $JobTitle;
-
-        return $this;
-    }
-
 
     public function getLocation(): ?string
     {
-        return $this->Location;
+        return $this->location;
     }
 
-    public function setLocation(string $Location): static
+    public function setLocation(?string $location): static
     {
-        $this->Location = $Location;
+        $this->location = $location;
 
         return $this;
     }
 
-
     public function getClosingDate(): ?\DateTimeInterface
     {
-        return $this->ClosingDate;
+        return $this->closingDate;
     }
 
-    public function setClosingDate(\DateTimeInterface $ClosingDate): static
+    public function setClosingDate(?\DateTimeInterface $closingDate): static
     {
-        $this->ClosingDate = $ClosingDate;
+        $this->closingDate = $closingDate;
 
         return $this;
     }
 
     public function getSalary(): ?string
     {
-        return $this->Salary;
+        return $this->salary;
     }
 
-    public function setSalary(string $Salary): static
+    public function setSalary(?string $salary): static
     {
-        $this->Salary = $Salary;
+        $this->salary = $salary;
 
         return $this;
     }
 
     public function getDateCreation(): ?\DateTimeInterface
     {
-        return $this->DateCreation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $DateCreation): static
+    public function setDateCreation(?\DateTimeInterface $dateCreation): static
     {
-        $this->DateCreation = $DateCreation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }
 
     public function getJobType(): ?JobType
     {
-        return $this->JobType;
+        return $this->jobType;
     }
 
-    public function setJobType(?JobType $JobType): static
+    public function setJobType(?JobType $jobType): static
     {
-        $this->JobType = $JobType;
+        $this->jobType = $jobType;
 
         return $this;
     }
 
     public function getJobCategory(): ?JobCategory
     {
-        return $this->JobCategory;
+        return $this->jobCategory;
     }
 
-    public function setJobCategory(?JobCategory $JobCategory): static
+    public function setJobCategory(?JobCategory $jobCategory): static
     {
-        $this->JobCategory = $JobCategory;
+        $this->jobCategory = $jobCategory;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Candidacy>
+     * @return Collection<int, JobToCandidate>
      */
-    public function getCandidacies(): Collection
+    public function getJobToCandidates(): Collection
     {
-        return $this->candidacies;
+        return $this->jobToCandidates;
     }
 
-    public function addCandidacy(Candidacy $candidacy): static
+    public function addJobToCandidate(JobToCandidate $jobToCandidate): static
     {
-        if (!$this->candidacies->contains($candidacy)) {
-            $this->candidacies->add($candidacy);
-            $candidacy->setJob($this);
+        if (!$this->jobToCandidates->contains($jobToCandidate)) {
+            $this->jobToCandidates->add($jobToCandidate);
+            $jobToCandidate->setJob($this);
         }
 
         return $this;
     }
 
-    public function removeCandidacy(Candidacy $candidacy): static
+    public function removeJobToCandidate(JobToCandidate $jobToCandidate): static
     {
-        if ($this->candidacies->removeElement($candidacy)) {
+        if ($this->jobToCandidates->removeElement($jobToCandidate)) {
             // set the owning side to null (unless already changed)
-            if ($candidacy->getJob() === $this) {
-                $candidacy->setJob(null);
+            if ($jobToCandidate->getJob() === $this) {
+                $jobToCandidate->setJob(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getClient(): ?Client
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): static
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+
+    public function getStartingDate(): ?\DateTimeInterface
+    {
+        return $this->startingDate;
+    }
+
+    public function setStartingDate(?\DateTimeInterface $startingDate): static
+    {
+        $this->startingDate = $startingDate;
+
+        return $this;
+    }
+    public function __toString(): string
+    {
+        return $this->reference;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(?string $title): static
+    {
+        $this->title = $title;
 
         return $this;
     }

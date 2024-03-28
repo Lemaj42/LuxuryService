@@ -15,18 +15,16 @@ class JobCategory
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Category = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $category = null;
 
-    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'JobCategory')]
+    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'jobCategory')]
     private Collection $jobs;
 
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
     }
-
-
 
     public function getId(): ?int
     {
@@ -35,12 +33,12 @@ class JobCategory
 
     public function getCategory(): ?string
     {
-        return $this->Category;
+        return $this->category;
     }
 
-    public function setCategory(string $Category): static
+    public function setCategory(?string $category): static
     {
-        $this->Category = $Category;
+        $this->category = $category;
 
         return $this;
     }
@@ -74,7 +72,8 @@ class JobCategory
 
         return $this;
     }
-
-
-
+    public function __toString(): string
+    {
+        return $this->category;
+    }
 }

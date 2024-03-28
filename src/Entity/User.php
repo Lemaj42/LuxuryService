@@ -36,6 +36,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Candidate $candidate = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?JobToCandidate $jobToCandidate = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -132,6 +135,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getJobToCandidate(): ?JobToCandidate
+    {
+        return $this->jobToCandidate;
+    }
+
+    public function setJobToCandidate(?JobToCandidate $jobToCandidate): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($jobToCandidate === null && $this->jobToCandidate !== null) {
+            $this->jobToCandidate->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($jobToCandidate !== null && $jobToCandidate->getUser() !== $this) {
+            $jobToCandidate->setUser($this);
+        }
+
+        $this->jobToCandidate = $jobToCandidate;
+
+        return $this;
+    }
+
 
 
 

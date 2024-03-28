@@ -15,18 +15,16 @@ class JobType
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $Type = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $type = null;
 
-    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'JobType')]
+    #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'jobType')]
     private Collection $jobs;
 
     public function __construct()
     {
         $this->jobs = new ArrayCollection();
     }
-
-
 
     public function getId(): ?int
     {
@@ -35,12 +33,12 @@ class JobType
 
     public function getType(): ?string
     {
-        return $this->Type;
+        return $this->type;
     }
 
-    public function setType(string $Type): static
+    public function setType(?string $type): static
     {
-        $this->Type = $Type;
+        $this->type = $type;
 
         return $this;
     }
@@ -75,4 +73,8 @@ class JobType
         return $this;
     }
 
+    public function __toString(): string
+    {
+        return $this->type;
+    }
 }

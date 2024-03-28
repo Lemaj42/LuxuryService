@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ExperienceRepository;
+use App\Repository\GenderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ExperienceRepository::class)]
-class Experience
+#[ORM\Entity(repositoryClass: GenderRepository::class)]
+class Gender
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -16,9 +16,9 @@ class Experience
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $experience = null;
+    private ?string $sexe = null;
 
-    #[ORM\OneToMany(targetEntity: Candidate::class, mappedBy: 'experience')]
+    #[ORM\OneToMany(targetEntity: Candidate::class, mappedBy: 'sexe')]
     private Collection $candidates;
 
     public function __construct()
@@ -26,21 +26,19 @@ class Experience
         $this->candidates = new ArrayCollection();
     }
 
-
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getExperience(): ?string
+    public function getSexe(): ?string
     {
-        return $this->experience;
+        return $this->sexe;
     }
 
-    public function setExperience(?string $experience): static
+    public function setSexe(?string $sexe): static
     {
-        $this->experience = $experience;
+        $this->sexe = $sexe;
 
         return $this;
     }
@@ -57,7 +55,7 @@ class Experience
     {
         if (!$this->candidates->contains($candidate)) {
             $this->candidates->add($candidate);
-            $candidate->setExperience($this);
+            $candidate->setSexe($this);
         }
 
         return $this;
@@ -67,12 +65,11 @@ class Experience
     {
         if ($this->candidates->removeElement($candidate)) {
             // set the owning side to null (unless already changed)
-            if ($candidate->getExperience() === $this) {
-                $candidate->setExperience(null);
+            if ($candidate->getSexe() === $this) {
+                $candidate->setSexe(null);
             }
         }
 
         return $this;
     }
-
 }

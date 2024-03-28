@@ -2,27 +2,27 @@
 
 namespace App\Repository;
 
-use App\Entity\Job;
+use App\Entity\JobToCandidate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Job>
+ * @extends ServiceEntityRepository<JobToCandidate>
  *
- * @method Job|null find($id, $lockMode = null, $lockVersion = null)
- * @method Job|null findOneBy(array $criteria, array $orderBy = null)
- * @method Job[]    findAll()
- * @method Job[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method JobToCandidate|null find($id, $lockMode = null, $lockVersion = null)
+ * @method JobToCandidate|null findOneBy(array $criteria, array $orderBy = null)
+ * @method JobToCandidate[]    findAll()
+ * @method JobToCandidate[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class JobRepository extends ServiceEntityRepository
+class JobToCandidateRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Job::class);
+        parent::__construct($registry, JobToCandidate::class);
     }
 
 //    /**
-//     * @return Job[] Returns an array of Job objects
+//     * @return JobToCandidate[] Returns an array of JobToCandidate objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class JobRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Job
+//    public function findOneBySomeField($value): ?JobToCandidate
 //    {
 //        return $this->createQueryBuilder('j')
 //            ->andWhere('j.exampleField = :val')

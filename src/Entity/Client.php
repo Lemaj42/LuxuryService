@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\ClientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ClientRepository::class)]
@@ -16,33 +15,33 @@ class Client
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $NomSociete = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nomSociete = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $TypeActivite = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $typeActivite = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $NomContact = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nomContact = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $Poste = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $poste = null;
 
-    #[ORM\Column]
-    private ?int $NumeroContact = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $numeroContact = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $EmailContact = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mailContact = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $Notes = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $notes = null;
 
     #[ORM\OneToMany(targetEntity: Job::class, mappedBy: 'client')]
-    private Collection $typeactivité;
+    private Collection $jobs;
 
     public function __construct()
     {
-        $this->typeactivité = new ArrayCollection();
+        $this->jobs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -52,84 +51,84 @@ class Client
 
     public function getNomSociete(): ?string
     {
-        return $this->NomSociete;
+        return $this->nomSociete;
     }
 
-    public function setNomSociete(string $NomSociete): static
+    public function setNomSociete(?string $nomSociete): static
     {
-        $this->NomSociete = $NomSociete;
+        $this->nomSociete = $nomSociete;
 
         return $this;
     }
 
     public function getTypeActivite(): ?string
     {
-        return $this->TypeActivite;
+        return $this->typeActivite;
     }
 
-    public function setTypeActivite(string $TypeActivite): static
+    public function setTypeActivite(?string $typeActivite): static
     {
-        $this->TypeActivite = $TypeActivite;
+        $this->typeActivite = $typeActivite;
 
         return $this;
     }
 
     public function getNomContact(): ?string
     {
-        return $this->NomContact;
+        return $this->nomContact;
     }
 
-    public function setNomContact(string $NomContact): static
+    public function setNomContact(?string $nomContact): static
     {
-        $this->NomContact = $NomContact;
+        $this->nomContact = $nomContact;
 
         return $this;
     }
 
     public function getPoste(): ?string
     {
-        return $this->Poste;
+        return $this->poste;
     }
 
-    public function setPoste(string $Poste): static
+    public function setPoste(?string $poste): static
     {
-        $this->Poste = $Poste;
+        $this->poste = $poste;
 
         return $this;
     }
 
-    public function getNumeroContact(): ?int
+    public function getNumeroContact(): ?string
     {
-        return $this->NumeroContact;
+        return $this->numeroContact;
     }
 
-    public function setNumeroContact(int $NumeroContact): static
+    public function setNumeroContact(?string $numeroContact): static
     {
-        $this->NumeroContact = $NumeroContact;
+        $this->numeroContact = $numeroContact;
 
         return $this;
     }
 
-    public function getEmailContact(): ?string
+    public function getMailContact(): ?string
     {
-        return $this->EmailContact;
+        return $this->mailContact;
     }
 
-    public function setEmailContact(string $EmailContact): static
+    public function setMailContact(?string $mailContact): static
     {
-        $this->EmailContact = $EmailContact;
+        $this->mailContact = $mailContact;
 
         return $this;
     }
 
-    public function getNotes(): ?int
+    public function getNotes(): ?string
     {
-        return $this->Notes;
+        return $this->notes;
     }
 
-    public function setNotes(?int $Notes): static
+    public function setNotes(?string $notes): static
     {
-        $this->Notes = $Notes;
+        $this->notes = $notes;
 
         return $this;
     }
@@ -137,30 +136,35 @@ class Client
     /**
      * @return Collection<int, Job>
      */
-    public function getTypeactivité(): Collection
+    public function getJobs(): Collection
     {
-        return $this->typeactivité;
+        return $this->jobs;
     }
 
-    public function addTypeactivit(Job $typeactivit): static
+    public function addJob(Job $job): static
     {
-        if (!$this->typeactivité->contains($typeactivit)) {
-            $this->typeactivité->add($typeactivit);
-            $typeactivit->setClient($this);
+        if (!$this->jobs->contains($job)) {
+            $this->jobs->add($job);
+            $job->setClient($this);
         }
 
         return $this;
     }
 
-    public function removeTypeactivit(Job $typeactivit): static
+    public function removeJob(Job $job): static
     {
-        if ($this->typeactivité->removeElement($typeactivit)) {
+        if ($this->jobs->removeElement($job)) {
             // set the owning side to null (unless already changed)
-            if ($typeactivit->getClient() === $this) {
-                $typeactivit->setClient(null);
+            if ($job->getClient() === $this) {
+                $job->setClient(null);
             }
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->nomSociete;
     }
 }
